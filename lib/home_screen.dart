@@ -8,15 +8,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
+  int numOfDots = 4;
+  int _selectedIndex = 1;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      setState(() {
+        _selectedIndex = 0;
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
-          // mainAxisSize: MainAxisSize.min,
-          // crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Spacer(),
@@ -40,7 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          _selectedIndex--;
+                          _selectedIndex =
+                              (_selectedIndex - 1 + numOfDots) % numOfDots;
                         });
                       },
                       child: CircleAvatar(
@@ -55,16 +67,24 @@ class _HomeScreenState extends State<HomeScreen> {
                         spacing: 8,
                         children: List.generate(
                           4,
-                          (index) =>
-                              Indicator(isActive: index == _selectedIndex),
+                          (index) => Indicator(
+                            isActive: index == _selectedIndex,
+                            onAnimationComplete: () {
+                              setState(() {
+                                _selectedIndex =
+                                    (_selectedIndex + 1) % numOfDots;
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ),
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          _selectedIndex++;
+                          _selectedIndex = (_selectedIndex + 1) % numOfDots;
                         });
+                        // updateNavigator(_selectedIndex + 1);
                       },
                       child: CircleAvatar(
                         radius: 28,
@@ -87,9 +107,10 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class Indicator extends StatelessWidget {
-  const Indicator({super.key, this.isActive = false});
+  const Indicator({super.key, this.isActive = false, this.onAnimationComplete});
 
   final bool isActive;
+  final VoidCallback? onAnimationComplete;
 
   @override
   Widget build(BuildContext context) {
@@ -108,6 +129,11 @@ class Indicator extends StatelessWidget {
         child: AnimatedContainer(
           duration: Duration(seconds: 3),
           width: isActive ? 42 : 0,
+          onEnd: () {
+            if (isActive) {
+              onAnimationComplete?.call();
+            }
+          },
           child: Container(
             decoration: BoxDecoration(
               color: isActive ? Colors.white : Colors.transparent,

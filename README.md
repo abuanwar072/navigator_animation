@@ -1,16 +1,7 @@
-# navigator_animation
+# Indicator Animation with Flutter [Live Demo][https://abuanwar072.github.io/navigator_animation/]
 
-A new Flutter project.
+This indicator animation may looks complex but in Flutter you can create this awesome animation with just 1 widget. No animation controller, no tween, no third party library, just a simple widget. [Tutorial Video](https://youtu.be/xqAT-yJTTwM)
 
-## Getting Started
+## Preview
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![demo](/demo.gif)
